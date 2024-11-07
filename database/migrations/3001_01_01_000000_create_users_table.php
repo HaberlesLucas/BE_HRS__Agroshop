@@ -12,12 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->id('id_user');
+            $table->string('nombre');
+            $table->string('usuario');
+            $table->string('password');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
             $table->rememberToken();
+
+            //campo para la clave foranea de la tabla->rol 
+            $table->unsignedBigInteger('rol_id');
+            //def de la FK para 'rol_id'. referenciando 'id_rol' en la talba 'rol'
+            $table->foreign('rol_id')->references('id_rol')->on('rols');
+
             $table->timestamps();
         });
 
