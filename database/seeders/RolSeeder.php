@@ -21,4 +21,4 @@ class RolSeeder extends Seeder
             ['id_rol' => 3, 'nombre_rol' => 'cliente'],
         ]);
     }
-}
+} 

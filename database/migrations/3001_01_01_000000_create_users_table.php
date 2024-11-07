@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
 
-            //campo para la clave foranea de la tabla->rol
+            //campo para la clave foranea de la tabla->rol 
             $table->unsignedBigInteger('rol_id');
             //def de la FK para 'rol_id'. referenciando 'id_rol' en la talba 'rol'
             $table->foreign('rol_id')->references('id_rol')->on('rols');

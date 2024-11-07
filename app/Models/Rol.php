@@ -8,7 +8,7 @@ class Rol extends Model
 {
     //
     protected $table = 'rols';
-    protected $primaryKey = 'id_rol';
+    protected $primaryKey = 'id_rol'; 
     public $timestamps = true;
     protected $fillable = ['nombre_rol'];
 
