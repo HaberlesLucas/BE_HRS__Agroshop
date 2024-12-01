@@ -14,18 +14,20 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id('id_user');
             $table->string('nombre');
-            $table->string('usuario');
+            $table->string('apellido');
             $table->string('password');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('usuario');
+            $table->boolean('estado')->default(1);
             $table->rememberToken();
 
-            //campo para la clave foranea de la tabla->rol 
-            $table->unsignedBigInteger('rol_id');
-            //def de la FK para 'rol_id'. referenciando 'id_rol' en la talba 'rol'
+            $table->unsignedBigInteger('rol_id')->default(3); //campo para la clave foranea de la tabla->rols
+            //def de la FK para 'rol_id'. referenciando 'id_rol' en la talba 'rols'
             $table->foreign('rol_id')->references('id_rol')->on('rols');
-
             $table->timestamps();
+
+
+            // $table->timestamp('email_verified_at')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
