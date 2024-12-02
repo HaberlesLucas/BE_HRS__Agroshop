@@ -21,7 +21,6 @@ return new class extends Migration
             //relaciones foreaneas 
             $table->foreign('id_carrito_cb')->references('id_carrito_cb')->on('carrito_cabecera')->onDelete('cascade');
             $table->foreign('id_producto')->references('id_producto')->on('productos')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
