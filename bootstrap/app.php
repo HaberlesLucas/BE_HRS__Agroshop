@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckRol;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,22 +17,22 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'jwt' => JwtMiddleware::class
+            'jwt' => JwtMiddleware::class, //middleware para JWT
+            'role' => CheckRol::class, //middleware para roles
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => $e->getMessage(),
+                    'message' => 'Usuario no autenticado. Por favor, inicie sesión.',
                 ], 401);
             }
         });
         $exceptions->render(function (Exception $e, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-
-                    'error' => $e->getMessage(),
+                    'error' => 'Error interno del servidor: ' . $e->getMessage(),
                 ], 500);
             }
         });

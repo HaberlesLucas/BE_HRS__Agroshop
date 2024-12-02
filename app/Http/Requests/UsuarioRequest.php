@@ -11,7 +11,7 @@ class UsuarioRequest extends FormRequest
      */
     public function authorize()
     {
-        // dd("");
+        // dd(".");
         return true;
     }
 
