@@ -51,37 +51,23 @@ class UserController extends Controller
 
 
 
-    public function update(UsuarioRequest $request, $id)
+    public function update(UsuarioRequest $request, string $id)
     {
-        //buscar recibido usuario
         $user = User::find($id);
 
-        //si usuario buscado no existe:
         if (!$user) {
             return response()->json(['message' => 'usuario no encontrado'], 404);
         }
 
-        //actualizar los campos proporcionados
-        $user->nombre = $request->nombre;
-        $user->apellido = $request->apellido;
-        $user->email = $request->email;
-
-        //actualizar rol solo si recibe 
-        if ($request->has('rol_id')) {
-            $user->rol_id = $request->rol_id;
-        }
-
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
+        $user->fill($request->validated());
         $user->save();
-        // return response()->json($user, 200);
+
         return response()->json([
             'message' => 'usuario actualizado correctamente',
             'user' => $user
         ], 200);
     }
+
 
 
     public function destroy($id)
