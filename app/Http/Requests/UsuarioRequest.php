@@ -22,7 +22,22 @@ class UsuarioRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
+        //solicitud de actualización
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+
+            $userId = $this->route('id');
+            return [
+                'email' => 'nullable|email|unique:users,email,' . $userId . ',id_user',  //excluye al usuario actual
+                'usuario' => 'nullable|string|max:255|unique:users,usuario,' . $userId . ',id_user', //excluye al usuario actual
+                'password' => 'nullable|string|min:6|confirmed',
+                'rol_id' => 'nullable|integer',
+            ];
+        }
+
+
+        // dd("holaa");
+
+        return [
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'password' => 'required|string|min:6|confirmed',
@@ -30,15 +45,6 @@ class UsuarioRequest extends FormRequest
             'usuario' => 'required|string|max:255|unique:users,usuario',
             'rol_id' => 'nullable|exists:rols,id_rol',
         ];
-
-        //solicitud de actualización
-        if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $rules['email'] = 'nullable|email|unique:users,email,' . $this->route('id'); //excluyendo al usuario actual
-            $rules['usuario'] = 'nullable|string|max:255|unique:users,usuario,' . $this->route('id'); //excluyendo al usuario actual
-            $rules['password'] = 'nullable|string|min:6|confirmed';
-        }
-
-        return $rules;
     }
 
     public function messages()

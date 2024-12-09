@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('codigo');
             $table->string('nombre');
             $table->string('descripcion');
+            $table->integer('stock');
+            $table->integer('stock_min')->nullable(true);
             $table->double('precio_compra');
             $table->double('incremento');
             

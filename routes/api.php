@@ -19,10 +19,18 @@ Route::group([
 
 //rutas protegidas por JWT y rol
 Route::middleware('jwt')->group(function () {
-    
+
 
     //rutas solo para administradores
-    Route::middleware('role:administrador')->prefix('productos')->group(function () {
+    Route::middleware('role:administrador')->prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
+    });
+
+    //rutas para admins y vendedores (manejan vendedores y admins los productos)
+    Route::middleware('role:vendedor,administrador')->prefix('productos')->group(function () {
         Route::get('/', [ProductoController::class, 'index']);
         Route::get('/{id}', [ProductoController::class, 'show']);
         Route::post('/', [ProductoController::class, 'store']);
@@ -30,16 +38,8 @@ Route::middleware('jwt')->group(function () {
         Route::delete('/{id}', [ProductoController::class, 'destroy']);
     });
 
-    //rutas para admins y vendedores
-    Route::middleware('role:vendedor,administrador')->prefix('users')->group(function () {
-        Route::get('/', [UserController::class, 'index']);
-        Route::get('/{id}', [UserController::class, 'show']);
-        Route::put('/{id}', [UserController::class, 'update']);
-        Route::delete('/{id}', [UserController::class, 'destroy']);
-    });
-
     //rutas solo para clientes
-    
+
     Route::middleware('role:cliente')->prefix('carrito')->group(function () {
         //operaciones sobre el carrito
         Route::get('/', [CarritoCabeceraController::class, 'show']);
@@ -52,12 +52,11 @@ Route::middleware('jwt')->group(function () {
 
         //finalizar la compra mueve el carrito actual al historial 
         Route::post('/finalizar-compra', [HistorialCarritoController::class, 'finalizarCompra']);
-        
-        
+
+
         Route::get('/historial-carrito', [HistorialCarritoController::class, 'index']); //todos
         Route::get('/historial-carrito/{id_historial}', [HistorialCarritoController::class, 'show']); //uno
     });
-    
 });
 
 

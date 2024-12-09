@@ -18,7 +18,7 @@ class LoginController extends Controller
         $field = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'usuario';
 
         $credenciales = [
-            $field => $request->input($field), 
+            $field => $request->input($field),
             'password' => $request->password,
         ];
 
@@ -26,11 +26,28 @@ class LoginController extends Controller
             if (!$token = JWTAuth::attempt($credenciales)) {
                 return response()->json(['error' => 'usuario no autorizado'], 401);
             }
+
+            $user = auth()->user();
+
+
+            $response = [
+                'token' => $token,
+                'user' => [
+                    'id_user' => $user->id_user,
+                    'rol_id' => $user->rol_id,
+                    'nombre' => $user->nombre,
+                    'apellido' => $user->apellido,
+                    'usuario' => $user->usuario,
+                    'email' => $user->email,
+
+                ]
+            ];
+            // dd($response);
+            // return token y los datos del usuario
+            return response()->json($response);
         } catch (JWTException $e) {
             return response()->json(['error' => 'no se pudo crear el token'], 500);
         }
-
-        return response()->json(compact('token'));
     }
 
     public function logout(Request $request)

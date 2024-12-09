@@ -20,6 +20,8 @@ class Producto extends Model
         'precio_compra',
         'incremento',
         'id_categoria',
+        'stock',
+        'stock_min',
     ];
 
     public function categoria()
