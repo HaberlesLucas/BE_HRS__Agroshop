@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CarritoCabeceraController;
 use App\Http\Controllers\CarritoDetalleController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\HistorialCarritoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductoController;
@@ -31,12 +32,26 @@ Route::middleware('jwt')->group(function () {
 
     //rutas para admins y vendedores (manejan vendedores y admins los productos)
     Route::middleware('role:vendedor,administrador')->prefix('productos')->group(function () {
-        Route::get('/', [ProductoController::class, 'index']);
-        Route::get('/{id}', [ProductoController::class, 'show']);
+
+        //obtener las cateorias para cargar un nuevo prodcuto
+        // Route::get('/categorias', [CategoriaController::class, 'index']);
+
+        // Route::get('/', [ProductoController::class, 'index']);
+        // Route::get('/{id}', [ProductoController::class, 'show']);
         Route::post('/', [ProductoController::class, 'store']);
         Route::put('/{id}', [ProductoController::class, 'update']);
         Route::delete('/{id}', [ProductoController::class, 'destroy']);
     });
+
+    //rutas para admins,clientes, y vendedores
+    // Route::middleware('role:vendedor,administrador,cliente')->prefix('productos')->group(function () {
+
+    //     //obtener las cateorias para cargar un nuevo prodcuto
+    //     Route::get('/categorias', [CategoriaController::class, 'index']);
+
+    //     Route::get('/', [ProductoController::class, 'index']);
+    //     Route::get('/{id}', [ProductoController::class, 'show']);
+    // });
 
     //rutas solo para clientes
 
@@ -63,7 +78,12 @@ Route::middleware('jwt')->group(function () {
 //ruta publica para crear  usuario
 Route::post('/users', [UserController::class, 'store']);
 
-
+//rutas publicas ya que el todos necesitan acceso a estos productos y por ende sus categorias
+Route::prefix('productos')->group(function () {
+    Route::get('/categorias', [CategoriaController::class, 'index']);
+    Route::get('/', [ProductoController::class, 'index']);
+    Route::get('/{id}', [ProductoController::class, 'show']);
+});
 /*
 permisos establecidos por el grupo
     decidimos que:
