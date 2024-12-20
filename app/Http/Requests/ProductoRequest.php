@@ -29,6 +29,7 @@ class ProductoRequest extends FormRequest
             'precio_compra'     => 'required|numeric',
             'incremento'        => 'required|numeric',
             'id_categoria'      => 'required|exists:categorias,id_categoria',
+            'imagenes.*' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048', //img max 2mb |max:2048
         ];
 
         // PUT o PATCH (actualizar)
@@ -41,8 +42,8 @@ class ProductoRequest extends FormRequest
             $rules['precio_compra'] = 'sometimes|numeric';
             $rules['incremento']    = 'sometimes|numeric';
             $rules['id_categoria']  = 'sometimes|exists:categorias,id_categoria';
+            $rules['imagenes.*']    = 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048';
         }
-
         return $rules;
     }
 
@@ -58,6 +59,9 @@ class ProductoRequest extends FormRequest
             'stock.required'            => 'El stock del producto es obligatorio.',
             'stock.min'                 => 'El stock debe ser un número entero positivo o cero.',
             'stock_min.min'             => 'El stock mínimo debe ser un número entero positivo o cero.',
+            'imagenes.*.image'          => 'Cada archivo debe ser una imagen válida.',
+            'imagenes.*.mimes'          => 'Cada imagen debe tener un formato válido (jpeg, png, jpg, gif).',
+            'imagenes.*.max'            => 'Cada imagen no debe superar los 2 MB.',
         ];
     }
 }
