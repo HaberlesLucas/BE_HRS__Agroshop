@@ -12,6 +12,8 @@ class Producto extends Model
 
     protected $table = 'productos';
     protected $primaryKey = 'id_producto';
+    
+    public $timestamps = true;
 
     protected $fillable = [
         'codigo',
@@ -27,5 +29,10 @@ class Producto extends Model
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria');
+    }
+
+    public function imagenes()
+    {
+        return $this->hasMany(Imagen::class, 'id_producto', 'id_producto');
     }
 }

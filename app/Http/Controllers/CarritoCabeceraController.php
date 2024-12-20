@@ -22,8 +22,6 @@ class CarritoCabeceraController extends Controller
         $carrito = CarritoCabecera::with('detalles.producto')
             ->where('id_user', $userId)
             ->firstOrCreate(['id_user' => $userId], ['fecha' => now(), 'precio_total' => 0]);
-
-
         return response()->json($carrito);
     }
 
